@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="PS.OrderEvents.API/PS.OrderEvents.API.csproj" />
+  <Project Path="PS.OrderEvents.Application/PS.OrderEvents.Application.csproj" />
+  <Project Path="PS.OrderEvents.Common/PS.OrderEvents.Common.csproj" />
+  <Project Path="PS.OrderEvents.Domain/PS.OrderEvents.Domain.csproj" />
+  <Project Path="PS.OrderEvents.Infrastructure/PS.OrderEvents.Infrastructure.csproj" />
+</Solution>
