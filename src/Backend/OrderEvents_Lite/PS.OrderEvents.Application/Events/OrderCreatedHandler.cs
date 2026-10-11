@@ -3,9 +3,9 @@ using PS.OrderEvents.Domain.Events;
 
 namespace PS.OrderEvents.Application.Events;
 
-public sealed class OrderCreatedHandler : IEventHandler<OrderCreated>
+public sealed class OrderCreatedHandler : DomainEventHandler<OrderCreated>
 {
-    public Task HandleAsync(OrderCreated domainEvent, CancellationToken ct = default)
+    public override Task HandleAsync(OrderCreated domainEvent, CancellationToken ct = default)
     {
         Console.WriteLine($"[EVENT] Order created: {domainEvent.OrderId}");
         return Task.CompletedTask;
