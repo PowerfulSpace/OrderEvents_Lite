@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PS.OrderEvents.Application.Abstractions;
 using PS.OrderEvents.Infrastructure.Events;
+using PS.OrderEvents.Infrastructure.Notifications;
 using PS.OrderEvents.Infrastructure.Persistence;
 using PS.OrderEvents.Infrastructure.Persistence.Repositories;
 
@@ -20,6 +21,7 @@ public static class DependencyInjection
 
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ITelegramNotifier, TelegramNotifierStub>();
 
         services.AddSingleton<InMemoryDomainEventQueue>();
         services.AddSingleton<IDomainEventQueue>(sp => sp.GetRequiredService<InMemoryDomainEventQueue>());

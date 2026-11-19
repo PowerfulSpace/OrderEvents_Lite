@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using PS.OrderEvents.API.Extensions;
 using PS.OrderEvents.Infrastructure;
 using PS.OrderEvents.Infrastructure.Persistence;
 
@@ -10,7 +9,6 @@ builder.Services.AddOpenApi();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(
     typeof(PS.OrderEvents.Application.Orders.Commands.CreateOrder.CreateOrderCommand).Assembly));
-builder.Services.AddApplication();
 
 builder.Services.AddCors(o => o.AddDefaultPolicy(p =>
     p.WithOrigins("http://localhost:5173", "https://localhost:5173")

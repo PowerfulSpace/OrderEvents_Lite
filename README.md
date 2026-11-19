@@ -18,7 +18,7 @@
 - ASP.NET Core 10
 - Clean Architecture (5 проектов)
 - CQRS через MediatR
-- Domain Events: собственные `IDomainEvent` и диспатчер (не MediatR)
+- Domain Events: `IDomainEvent : INotification`, обработка через MediatR (`INotificationHandler<T>`)
 - EF Core + SQLite
 - `System.Threading.Channels` (in-process очередь)
 - `BackgroundService`
@@ -42,7 +42,7 @@ OrderEvents_Lite.slnx
 - `API` → `Application`, `Infrastructure`
 - `Application` → `Domain`
 - `Infrastructure` → `Application`
-- `Domain` не зависит ни от кого
+- `Domain` не зависит ни от кого, кроме `MediatR.Contracts` (только интерфейсы, без транзитивных зависимостей)
 
 ## Пайплайн обработки
 
@@ -63,9 +63,9 @@ POST /orders
 [фон, DomainEventQueueProcessor]
   → читает Channel
   → Task.Delay(3000)                  ← demo delay, remove later
-  → scope → IDomainEventDispatcher.DispatchAsync
-      → OrderCreatedHandler           → [EVENT] Order created
-      → TelegramOrderCreatedHandler   → [TELEGRAM] Would send notification
+  → scope → IPublisher.Publish
+      → INotificationHandler<OrderCreated>  → [EVENT] Order created
+      → TelegramOrderCreatedHandler         → [TELEGRAM] Would send notification
   → ошибки ловятся, воркер живёт
 ```
 
@@ -106,8 +106,8 @@ npm run dev
 1. Запустить API.
 2. Выполнить `POST /orders` (curl, Postman или `.http`-файл) — ответ `201` приходит быстро.
 3. Через ~3 секунды в консоли API появляются:
-   - `[EVENT] Order created: <id>` — старый хендлер;
-   - `[TELEGRAM] Would send notification for order <id>` — новый хендлер.
+   - `[EVENT] Order created: <id>` — `OrderCreatedHandler`;
+   - `[TELEGRAM] Would send notification for order <id>` — `TelegramOrderCreatedHandler`.
 4. Ответ мгновенный, обработка — в фоне. Это и есть event-driven: запрос не ждёт побочных эффектов.
 
 Порядок строк между хендлерами не гарантирован.
@@ -122,8 +122,8 @@ npm run dev
 }
 ```
 
-Перезапустить API и выполнить `POST /orders`. В консоли появится `[TELEGRAM ERROR] ...`, но `[EVENT]` от старого хендлера будет, заказ останется в БД, а воркер продолжит обрабатывать следующие события.
+Перезапустить API и выполнить `POST /orders`. В консоли появится `[TELEGRAM ERROR] ...`, но `[EVENT]` от `OrderCreatedHandler` будет, заказ останется в БД, а воркер продолжит обрабатывать следующие события.
 
 ## Что дальше / чего здесь нет
 
-Проект намеренно не содержит продакшн-механизмов: Outbox, retry/dead-letter, идемпотентности, внешней шины (RabbitMQ/Kafka), реального Telegram Bot API, auth и тестов. Полный список с объяснением рисков — в [KNOWN_SIMPLIFICATIONS.md](KNOWN_SIMPLIFICATIONS.md).
+Проект намеренно не содержит продакшн-механизмов: Outbox, retry/dead-letter, идемпотентности, внешней шины (RabbitMQ/Kafka), реального Telegram Bot API, auth и тестов. Полный список с объяснением рисков — в [KNOWN_SIMPLIFICATIONS.md](KNOWN_SIMPLIFICATIONS.md). (MediatR 14 без license key логирует warning — для учебного проекта допустимо.)
