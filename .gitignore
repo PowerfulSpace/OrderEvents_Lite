@@ -474,3 +474,10 @@ pnpm-debug.log*
 .npm
 .eslintcache
 .stylelintcache
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+orderevents.db
