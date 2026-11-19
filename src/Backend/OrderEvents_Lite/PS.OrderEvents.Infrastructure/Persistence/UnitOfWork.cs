@@ -5,7 +5,7 @@ namespace PS.OrderEvents.Infrastructure.Persistence;
 
 public sealed class UnitOfWork(
     OrderEventsDbContext context,
-    IDomainEventDispatcher dispatcher) : IUnitOfWork
+    IDomainEventQueue queue) : IUnitOfWork
 {
     public async Task SaveChangesAsync(CancellationToken ct = default)
     {
@@ -28,8 +28,9 @@ public sealed class UnitOfWork(
             .SelectMany(o => o.DomainEvents)
             .ToList();
 
-        // 5. Раздача подписчикам
-        await dispatcher.DispatchAsync(domainEvents, ct);
+        // 5. Постановка в очередь — обработка не блокирует запрос
+        foreach (var domainEvent in domainEvents)
+            await queue.EnqueueAsync(domainEvent, ct);
 
         // 6. Очистить копилки — событие публикуется ровно один раз
         foreach (var order in entitiesWithEvents)
