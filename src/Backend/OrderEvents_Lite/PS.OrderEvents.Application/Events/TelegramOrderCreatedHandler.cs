@@ -1,9 +1,10 @@
+using MediatR;
 using PS.OrderEvents.Application.Abstractions;
 using PS.OrderEvents.Domain.Events;
 
 namespace PS.OrderEvents.Application.Events;
 
-public sealed class TelegramOrderCreatedHandler(ITelegramNotifier notifier) : DomainEventHandler<OrderCreated>
+public sealed class TelegramOrderCreatedHandler(ITelegramNotifier notifier) : DomainEventHandler<OrderCreated>, INotificationHandler<OrderCreated>
 {
     public override async Task HandleAsync(OrderCreated evt, CancellationToken ct = default)
     {
@@ -18,4 +19,7 @@ public sealed class TelegramOrderCreatedHandler(ITelegramNotifier notifier) : Do
             Console.WriteLine($"[TELEGRAM ERROR] Failed to notify order {evt.OrderId}: {ex.Message}");
         }
     }
+
+    public Task Handle(OrderCreated notification, CancellationToken cancellationToken)
+        => HandleAsync(notification, cancellationToken);
 }

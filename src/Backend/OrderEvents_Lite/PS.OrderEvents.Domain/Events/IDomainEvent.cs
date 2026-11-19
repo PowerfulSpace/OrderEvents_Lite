@@ -1,7 +1,8 @@
-﻿namespace PS.OrderEvents.Domain.Events
+﻿using MediatR;
+
+namespace PS.OrderEvents.Domain.Events;
+
+public interface IDomainEvent : INotification
 {
-    public interface IDomainEvent
-    {
-        public DateTime OccurredOn { get;}
-    }
+    DateTime OccurredOn { get; }
 }
