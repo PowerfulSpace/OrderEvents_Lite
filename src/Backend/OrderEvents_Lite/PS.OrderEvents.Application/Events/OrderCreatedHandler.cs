@@ -1,17 +1,13 @@
 ﻿using MediatR;
-using PS.OrderEvents.Application.Abstractions;
 using PS.OrderEvents.Domain.Events;
 
 namespace PS.OrderEvents.Application.Events;
 
-public sealed class OrderCreatedHandler : DomainEventHandler<OrderCreated>, INotificationHandler<OrderCreated>
+public sealed class OrderCreatedHandler : INotificationHandler<OrderCreated>
 {
-    public override Task HandleAsync(OrderCreated domainEvent, CancellationToken ct = default)
+    public Task Handle(OrderCreated notification, CancellationToken cancellationToken)
     {
-        Console.WriteLine($"[EVENT] Order created: {domainEvent.OrderId}");
+        Console.WriteLine($"[EVENT] Order created: {notification.OrderId}");
         return Task.CompletedTask;
     }
-
-    public Task Handle(OrderCreated notification, CancellationToken cancellationToken)
-        => HandleAsync(notification, cancellationToken);
 }

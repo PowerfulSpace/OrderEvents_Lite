@@ -1,7 +1,7 @@
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using PS.OrderEvents.Application.Abstractions;
 
 namespace PS.OrderEvents.Infrastructure.Events;
 
@@ -19,8 +19,8 @@ public sealed class DomainEventQueueProcessor(
                 await Task.Delay(3000, stoppingToken); // demo delay, remove later
 
                 using var scope = scopeFactory.CreateScope();
-                var dispatcher = scope.ServiceProvider.GetRequiredService<IDomainEventDispatcher>();
-                await dispatcher.DispatchAsync([domainEvent], stoppingToken);
+                var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
+                await publisher.Publish(domainEvent, stoppingToken);
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {

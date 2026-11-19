@@ -20,7 +20,6 @@ public static class DependencyInjection
 
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
 
         services.AddSingleton<InMemoryDomainEventQueue>();
         services.AddSingleton<IDomainEventQueue>(sp => sp.GetRequiredService<InMemoryDomainEventQueue>());

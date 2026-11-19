@@ -1,17 +1,13 @@
 ﻿using MediatR;
-using PS.OrderEvents.Application.Abstractions;
 using PS.OrderEvents.Domain.Events;
 
 namespace PS.OrderEvents.Application.Events;
 
-public sealed class OrderStatusChangedHandler : DomainEventHandler<OrderStatusChanged>, INotificationHandler<OrderStatusChanged>
+public sealed class OrderStatusChangedHandler : INotificationHandler<OrderStatusChanged>
 {
-    public override Task HandleAsync(OrderStatusChanged domainEvent, CancellationToken ct = default)
+    public Task Handle(OrderStatusChanged notification, CancellationToken cancellationToken)
     {
-        Console.WriteLine($"[EVENT] Order {domainEvent.OrderId}: {domainEvent.OldStatus} → {domainEvent.NewStatus}");
+        Console.WriteLine($"[EVENT] Order {notification.OrderId}: {notification.OldStatus} → {notification.NewStatus}");
         return Task.CompletedTask;
     }
-
-    public Task Handle(OrderStatusChanged notification, CancellationToken cancellationToken)
-        => HandleAsync(notification, cancellationToken);
 }
