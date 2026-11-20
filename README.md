@@ -44,6 +44,15 @@ OrderEvents_Lite.slnx
 - `Infrastructure` → `Application`
 - `Domain` не зависит ни от кого, кроме `MediatR.Contracts` (только интерфейсы, без транзитивных зависимостей)
 
+## Документация
+
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — как устроено;
+- [docs/DECISIONS.md](docs/DECISIONS.md) — почему так;
+- [docs/EVENT_DRIVEN_DECISIONS.md](docs/EVENT_DRIVEN_DECISIONS.md) — когда применять event-driven;
+- [docs/GLOSSARY.md](docs/GLOSSARY.md) — словарь терминов;
+- [docs/PRODUCTION_ROADMAP.md](docs/PRODUCTION_ROADMAP.md) — куда расти;
+- [KNOWN_SIMPLIFICATIONS.md](KNOWN_SIMPLIFICATIONS.md) — что упрощено.
+
 ## Пайплайн обработки
 
 ```text

@@ -78,7 +78,7 @@ Common         — никто не ссылается
 
 | Метод | Путь | Тело | Ответ |
 |-------|------|------|-------|
-| `POST` | `/orders` | — | `201 Created` |
+| `POST` | `/orders` | — | `201 Created`, `Location: /orders/{id}` |
 | `PATCH` | `/orders/{id}/status` | `{ "newStatus": 1 }` | `204 No Content` |
 | `GET` | `/orders/{id}` | — | `200` / `404` |
 | `GET` | `/orders` | — | `200` |
@@ -138,4 +138,4 @@ POST /orders
 
 - [KNOWN_SIMPLIFICATIONS.md](../KNOWN_SIMPLIFICATIONS.md) — что осознанно упрощено и чем это грозит в проде.
 - [PRODUCTION_ROADMAP.md](PRODUCTION_ROADMAP.md) — куда и в каком порядке расти.
-- [EVENT_DRIVEN_DECISIONS.md](EVENT_DRIVEN_DECISIONS.md) — когда применять event-driven подход (если файл будет добавлен).
+- [EVENT_DRIVEN_DECISIONS.md](EVENT_DRIVEN_DECISIONS.md) — когда применять event-driven.
